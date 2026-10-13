@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Environment variables (secrets)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
