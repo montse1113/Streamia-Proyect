@@ -20,7 +20,7 @@ Final project for Web Systems Programming at UAA.
 
 ## Documentation
 
-- [Sprint 1 planning](docs/sprint1-planning.md)
+- [Sprint 1 planning](docs/planning_streamia_sprint1.md)
 - [Project board](https://github.com/users/montse1113/projects/2)
 
 ## ER Diagram
