@@ -25,7 +25,7 @@ Final project for Web Systems Programming at UAA.
 
 ## ER Diagram
 
-![ER Diagram](docs/Diagram E-R.png)
+![ER Diagram](docs/e-r_diagram.png)
 
 ## How we work
 
