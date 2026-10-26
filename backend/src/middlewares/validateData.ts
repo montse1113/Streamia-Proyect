@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import { error } from "node:console";
+
 
 //returns the invalid fields withouth echoing the values (e.g passwords)
 export const validate = (req: Request, res: Response, next: NextFunction) => {
