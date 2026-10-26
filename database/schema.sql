@@ -153,6 +153,8 @@ INSERT INTO users (name, last_name, email, password, role) VALUES
 INSERT INTO genres (name) VALUES
 ('Action'), ('Animation'), ('Comedy'), ('Drama'), ('Fantasy'), ('Science Fiction');
 
+-- 16 titles so the catalog has 2 pages (15 per page)
+-- 15 movies (ids 1-15) and 1 series (id 16)
 -- test videos from the Google sample bucket (Blender open movies)
 INSERT INTO titles (type, title, synopsis, release_year, age_rating, duration_min, poster_url, video_url) VALUES
 ('movie', 'Big Buck Bunny', 'A big rabbit gets revenge on three rodents.', 2008, 'AA', 10, 'https://placehold.co/300x450?text=Big+Buck+Bunny', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'),
@@ -162,6 +164,14 @@ INSERT INTO titles (type, title, synopsis, release_year, age_rating, duration_mi
 ('movie', 'For Bigger Blazes', 'Short test video.', 2014, 'A', 1, 'https://placehold.co/300x450?text=For+Bigger+Blazes', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'),
 ('movie', 'For Bigger Escapes', 'Short test video.', 2014, 'A', 1, 'https://placehold.co/300x450?text=For+Bigger+Escapes', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'),
 ('movie', 'For Bigger Fun', 'Short test video.', 2014, 'A', 1, 'https://placehold.co/300x450?text=For+Bigger+Fun', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'),
+('movie', 'For Bigger Joyrides', 'Short test video.', 2014, 'A', 1, 'https://placehold.co/300x450?text=For+Bigger+Joyrides', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'),
+('movie', 'For Bigger Meltdowns', 'Short test video.', 2014, 'A', 1, 'https://placehold.co/300x450?text=For+Bigger+Meltdowns', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4'),
+('movie', 'Subaru Outback On Street And Dirt', 'A car is tested on the road and off road.', 2015, 'A', 10, 'https://placehold.co/300x450?text=Subaru+Outback', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4'),
+('movie', 'Volkswagen GTI Review', 'A review of a sports car.', 2015, 'A', 10, 'https://placehold.co/300x450?text=Volkswagen+GTI', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4'),
+('movie', 'We Are Going On Bullrun', 'A group of friends join a road rally.', 2015, 'B', 1, 'https://placehold.co/300x450?text=Bullrun', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4'),
+('movie', 'What Car Can You Get For A Grand', 'Looking for the best cheap car.', 2015, 'A', 9, 'https://placehold.co/300x450?text=What+Car', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4'),
+('movie', 'Cosmos Laundromat', 'A sad sheep gets a strange offer.', 2015, 'B', 12, 'https://placehold.co/300x450?text=Cosmos+Laundromat', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'),
+('movie', 'Spring', 'A girl and her dog face the spirits of the forest.', 2019, 'A', 8, 'https://placehold.co/300x450?text=Spring', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4'),
 ('series', 'The Open Lab', 'A group of students build a new invention in every episode.', 2024, 'A', NULL, 'https://placehold.co/300x450?text=The+Open+Lab', NULL);
 
 INSERT INTO title_genres (title_id, genre_id) VALUES
@@ -172,12 +182,20 @@ INSERT INTO title_genres (title_id, genre_id) VALUES
 (5, 1),
 (6, 4),
 (7, 3),
-(8, 3), (8, 6);
+(8, 3),
+(9, 4),
+(10, 1),
+(11, 1),
+(12, 1), (12, 3),
+(13, 3),
+(14, 2), (14, 5),
+(15, 2), (15, 5),
+(16, 3), (16, 6);
 
--- The Open Lab (title 8) has 2 seasons with 2 episodes each
+-- The Open Lab (title 16) has 2 seasons with 2 episodes each
 INSERT INTO seasons (title_id, number) VALUES
-(8, 1),
-(8, 2);
+(16, 1),
+(16, 2);
 
 INSERT INTO episodes (season_id, number, name, duration_min, video_url) VALUES
 (1, 1, 'The First Prototype', 1, 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'),
