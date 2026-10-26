@@ -1,6 +1,7 @@
 import express, { type Express, type Router } from "express";
 import helmet from "helmet";
 import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandler.ts";
 
 type ServerOptions = {
   port: number;
@@ -20,6 +21,7 @@ export class Server {
     this.app.use(cors({ origin: options.frontendUrl }));
     this.app.use(express.json());
     this.app.use("/api", options.routes);
+    this.app.use(errorHandler);
   }
 
   public start() {
