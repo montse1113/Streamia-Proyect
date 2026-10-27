@@ -10,3 +10,8 @@ export const registerValidator = [
     .matches(/\d/)
     .withMessage("password must contain a number"),
 ];
+
+export const loginValidator = [
+  body("email").trim().isEmail().withMessage("invalid email").normalizeEmail(),
+  body("password").notEmpty().withMessage("password is required"),
+];
