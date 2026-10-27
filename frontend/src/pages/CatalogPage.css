@@ -1,0 +1,40 @@
+.catalog {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+}
+
+.catalog_message {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.catalog_title {
+    color: #b42318;
+}
+
+.title-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.title_card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.title-card__name {
+    margin: 0.5rem 0 0.125rem;
+    font-size: 1rem;
+}
+
+.title-card__info {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.70;
+}
