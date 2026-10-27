@@ -19,7 +19,7 @@ export function TitleCard({ title }: TitleCardProps) {
       )}
       <h2 className="title-card__name">{title.title}</h2>
       <p className="title-card__info">
-        {typeLabel}, {title.releaseYear}
+        {title.releaseYear ? `${typeLabel}, ${title.releaseYear}` : typeLabel}
       </p>
     </Link>
   )

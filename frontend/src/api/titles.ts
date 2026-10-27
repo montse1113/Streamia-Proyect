@@ -1,41 +1,39 @@
-import { mockGenres, mockTitles } from '../mocks/titles'
 import type { Genre, PaginatedResponse, Title, TitleFilters } from '../types/title'
 
-const DEFAULT_LIMIT = 15
-const MOCK_DELAY_MS = 400
+const API_URL = '/api/v1'
 
-function wait(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
+// Keeps the HTTP status so pages can react to it (for example, 404 in title details)
+export class ApiError extends Error {
+  status: number
 
-// TODO: replace the mock with GET /api/v1/titles when the endpoint is ready
-export async function getTitles(filters: TitleFilters = {}): Promise<PaginatedResponse<Title>> {
-  await wait(MOCK_DELAY_MS)
-
-  const page = filters.page ?? 1
-  const limit = filters.limit ?? DEFAULT_LIMIT
-
-  const filteredTitles = mockTitles.filter((title) => {
-    const matchesType = !filters.type || title.type === filters.type
-    const matchesGenre = !filters.genreId || title.genres.some((genre) => genre.id === filters.genreId)
-    return matchesType && matchesGenre
-  })
-
-  const start = (page - 1) * limit
-
-  return {
-    data: filteredTitles.slice(start, start + limit),
-    meta: {
-      page,
-      limit,
-      total: filteredTitles.length,
-      totalPages: Math.ceil(filteredTitles.length / limit),
-    },
+  constructor(status: number, message: string) {
+    super(message)
+    this.status = status
   }
 }
 
-// TODO: replace the mock with GET /api/v1/genres when the endpoint is ready
-export async function getGenres(): Promise<Genre[]> {
-  await wait(MOCK_DELAY_MS)
-  return mockGenres
+async function request<T>(path: string): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`)
+
+  if (!response.ok) {
+    throw new ApiError(response.status, `Request failed with status ${response.status}`)
+  }
+
+  return response.json() as Promise<T>
+}
+
+export function getTitles(filters: TitleFilters = {}) {
+  const params = new URLSearchParams()
+  if (filters.page) params.set('page', String(filters.page))
+  if (filters.limit) params.set('limit', String(filters.limit))
+  if (filters.type) params.set('type', filters.type)
+  if (filters.genreId) params.set('genreId', String(filters.genreId))
+
+  const query = params.toString()
+  return request<PaginatedResponse<Title>>(`/titles${query ? `?${query}` : ''}`)
+}
+
+export async function getGenres() {
+  const response = await request<{ data: Genre[] }>('/genres')
+  return response.data
 }
