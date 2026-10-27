@@ -1,25 +1,56 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { getTitles } from '../api/titles'
+import { getGenres, getTitles } from '../api/titles'
+import { CatalogFilters } from '../components/CatalogFilters'
 import { Pagination } from '../components/Pagination'
 import { TitleGrid } from '../components/TitleGrid'
-import type { PaginationMeta, Title } from '../types/title'
+import type { Genre, PaginationMeta, Title, TitleType } from '../types/title'
 import './CatalogPage.css'
 
-// Returns a valid page number from the URL, or 1 if it is missing or invalid
+// Each parser returns a valid value from the URL, or a default if it is missing or invalid
 function parsePage(value: string | null) {
   const page = Number(value)
   return Number.isInteger(page) && page >= 1 ? page : 1
 }
 
+function parseType(value: string | null): TitleType | undefined {
+  return value === 'movie' || value === 'series' ? value : undefined
+}
+
+function parseGenreId(value: string | null) {
+  const genreId = Number(value)
+  return Number.isInteger(genreId) && genreId >= 1 ? genreId : undefined
+}
+
 export function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const page = parsePage(searchParams.get('page'))
+  const type = parseType(searchParams.get('type'))
+  const genreId = parseGenreId(searchParams.get('genreId'))
+  const hasFilters = type !== undefined || genreId !== undefined
 
   const [titles, setTitles] = useState<Title[]>([])
   const [meta, setMeta] = useState<PaginationMeta | null>(null)
+  const [genres, setGenres] = useState<Genre[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Genres only need to be loaded once
+  useEffect(() => {
+    let ignore = false
+
+    getGenres()
+      .then((response) => {
+        if (!ignore) setGenres(response)
+      })
+      .catch(() => {
+        // The catalog still works without genres; the select only shows "All genres"
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   useEffect(() => {
     // Ignores the response if the user leaves the page before it arrives
@@ -30,8 +61,11 @@ export function CatalogPage() {
       setError(null)
 
       try {
-        const response = await getTitles()
-        if (!ignore) setTitles(response.data)
+        const response = await getTitles({ page, type, genreId })
+        if (!ignore) {
+          setTitles(response.data)
+          setMeta(response.meta)
+        }
       } catch {
         if (!ignore) setError('The catalog could not be loaded. Try again in a moment.')
       } finally {
@@ -44,7 +78,7 @@ export function CatalogPage() {
     return () => {
       ignore = true
     }
-  }, [page])
+  }, [page, type, genreId])
 
   function handlePageChange(newPage: number) {
     setSearchParams((currentParams) => {
@@ -55,9 +89,35 @@ export function CatalogPage() {
     window.scrollTo({ top: 0 })
   }
 
+  // Changing a filter always goes back to page 1
+  function handleFilterChange(name: 'type' | 'genreId', value: string | undefined) {
+    setSearchParams((currentParams) => {
+      const nextParams = new URLSearchParams(currentParams)
+      if (value) {
+        nextParams.set(name, value)
+      } else {
+        nextParams.delete(name)
+      }
+      nextParams.delete('page')
+      return nextParams
+    })
+  }
+
+  function clearFilters() {
+    setSearchParams({})
+  }
+
   return (
     <main className="catalog">
       <h1>Catalog</h1>
+
+      <CatalogFilters
+        type={type}
+        genreId={genreId}
+        genres={genres}
+        onTypeChange={(newType) => handleFilterChange('type', newType)}
+        onGenreChange={(newGenreId) => handleFilterChange('genreId', newGenreId?.toString())}
+      />
 
       {isLoading && <p className="catalog__message">Loading titles...</p>}
 
@@ -70,7 +130,12 @@ export function CatalogPage() {
       {!isLoading && !error && titles.length === 0 && (
         <div className="catalog__message">
           <p>No titles match these filters.</p>
-          {page > 1 && (
+          {hasFilters && (
+            <button type="button" onClick={clearFilters}>
+              Clear filters
+            </button>
+          )}
+          {!hasFilters && page > 1 && (
             <button type="button" onClick={() => handlePageChange(1)}>
               Go to the first page
             </button>
