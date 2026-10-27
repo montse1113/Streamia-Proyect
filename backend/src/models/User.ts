@@ -6,11 +6,12 @@ const sequelize = sequelizeConnection.getSequelize();
 interface IUser extends Model {
     id: number;
     name: string;
+    lastName: string;
     email: string;
     password: string;
     role: "admin" | "customer";
     isActive: boolean;
-    createAt: Date;
+    createdAt: Date;
 }
 
 const User = sequelize.define<IUser>(
@@ -35,7 +36,7 @@ const User = sequelize.define<IUser>(
             unique: true,
         }, 
         // bcrypt hash, never the real password
-        passwrod: {
+        password: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
