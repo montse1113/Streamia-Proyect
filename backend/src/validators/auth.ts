@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 
 export const registerValidator = [
-  body("name").trim().notEmpty().withMessage("name is required").isLength({ max: 80 }),
-  body("lastName").trim().notEmpty().withMessage("last name is required").isLength({ max: 80 }),
+  body("name").trim().notEmpty().withMessage("name is required").isLength({ max: 80 }).withMessage("name must be at most 80 characters"),
+  body("lastName").trim().notEmpty().withMessage("last name is required").isLength({ max: 80 }).withMessage("last name must be at most 80 characters"),
     body("email")
     .trim()
     .isLength({ max: 255 })
