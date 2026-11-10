@@ -4,6 +4,7 @@ import Genre from "./Genre.ts";
 import TitleGenre from "./TitleGenre.ts";
 import Season from "./Season.ts";
 import Episode from "./Episode.ts";
+import Plan from "./Plan.ts";
 
 // relations
 Title.belongsToMany(Genre, { through: TitleGenre, as: "genres", foreignKey: "titleId", otherKey: "genreId" });
@@ -15,4 +16,4 @@ Season.belongsTo(Title, { foreignKey: "titleId" });
 Season.hasMany(Episode, { as: "episodes", foreignKey: "seasonId" });
 Episode.belongsTo(Season, { foreignKey: "seasonId" });
 
-export { User, Title, Genre, TitleGenre, Season, Episode };
+export { User, Title, Genre, TitleGenre, Season, Episode, Plan };
