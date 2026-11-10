@@ -41,13 +41,25 @@ describe("POST /api/v1/auth/register", () => {
         expect(fields).toEqual(expect.arrayContaining(["name", "email", "password"]));
     });
 
-    it("returns 400 when the body is not valid JSON", async () => {
+        it("returns 400 with a clear message when the body is not valid JSON", async () => {
         const res = await request(app)
             .post("/api/v1/auth/register")
             .set("Content-Type", "application/json")
             .send("{\"email\": ");
 
         expect(res.status).toBe(400);
+        expect(res.body.message).toBe("The request could not be read. Check the data and try again.");
+    });
+
+    it("returns 400 with a clear message when the name is too long", async () => {
+        const res = await request(app)
+            .post("/api/v1/auth/register")
+            .send({ name: "a".repeat(81), lastName: "User", email: `long_${email}`, password });
+
+        expect(res.status).toBe(400);
+        expect(res.body.errors).toEqual(
+            expect.arrayContaining([{ field: "name", message: "name must be at most 80 characters" }]),
+        );
     });
 });
 
