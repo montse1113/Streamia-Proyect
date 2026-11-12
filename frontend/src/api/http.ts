@@ -17,7 +17,7 @@ async function getErrorMessage(response: Response) {
 
     // 400: list of errors
     if (Array.isArray(body.errors)) {
-      return body.errors.map((error: { message: string }) => error.message).join(' ')
+      return body.errors.map((error: { message: string }) => error.message).join('. ')
     }
 
     // 401, 404, 409...: one message
