@@ -7,13 +7,13 @@ export const authenticate = (tokenAdapter: TokenAdapter) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const header = req.headers.authorization;
         if (!header?.startsWith("Bearer ")) {
-            throw new HttpError(401, "token is required");
+            throw new HttpError(401, "Please log in to continue.");
         }
 
         try {
             res.locals.user = await tokenAdapter.verify(header.slice(7));
         } catch {
-            throw new HttpError(401, "invalid or expired token");
+            throw new HttpError(401, "Your session has expired. Please log in again.");
         }
         next();
     };
@@ -24,7 +24,7 @@ export const authorize = (...roles: TokenPayload["role"][]) => {
     return (_req: Request, res: Response, next: NextFunction) => {
         const user = res.locals.user as TokenPayload;
         if (!roles.includes(user.role)) {
-            throw new HttpError(403, "you do not have permission to do this");
+            throw new HttpError(403, "You don't have permission to do this.");
         }
         next();
     };

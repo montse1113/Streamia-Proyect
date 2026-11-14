@@ -6,7 +6,7 @@ export class UserService {
     public async getById(id: number): Promise<UserResponseDto> {
         const user = await User.findOne({ where: { id, isActive: true } });
         if (!user) {
-            throw new HttpError(404, "user not found");
+            throw new HttpError(404, "We couldn't find your account.");
         }
         return UserResponseDto.create(user);
     }
