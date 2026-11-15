@@ -140,10 +140,10 @@ CREATE TABLE watch_progress (
 
 -- ---------- test data ----------
 
-INSERT INTO plans (name, price, max_quality, max_screens) VALUES
-('Basic', 99.00, 'SD', 1),
-('Standard', 149.00, 'HD', 2),
-('Premium', 199.00, '4K', 4);
+INSERT INTO plans (name, price, max_quality, max_screens, price_id) VALUES
+('Basic', 99.00, 'SD', 1, 'price_1UbuOJCGCnhvaYGHR2eSBEz2'),
+('Standard', 149.00, 'HD', 2, 'price_1UbuOdCGCnhvaYGHc0JQEExD'),
+('Premium', 199.00, '4K', 4, 'price_1UbuOvCGCnhvaYGH3vWhAiuH');
 
 -- passwords are bcrypt hashes (cost 10)
 INSERT INTO users (name, last_name, email, password, role) VALUES
