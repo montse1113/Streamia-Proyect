@@ -41,7 +41,7 @@ describe("POST /api/v1/auth/register", () => {
         expect(fields).toEqual(expect.arrayContaining(["name", "email", "password"]));
     });
 
-        it("returns 400 with a clear message when the body is not valid JSON", async () => {
+    it("returns 400 with a clear message when the body is not valid JSON", async () => {
         const res = await request(app)
             .post("/api/v1/auth/register")
             .set("Content-Type", "application/json")
@@ -58,7 +58,7 @@ describe("POST /api/v1/auth/register", () => {
 
         expect(res.status).toBe(400);
         expect(res.body.errors).toEqual(
-            expect.arrayContaining([{ field: "name", message: "name must be at most 80 characters" }]),
+            expect.arrayContaining([{ field: "name", message: "Your name can have up to 80 characters." }]),
         );
     });
 });
