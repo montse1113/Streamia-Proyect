@@ -1,0 +1,54 @@
+name: CI
+
+# runs on every PR and every push to the main branches
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    # throwaway MySQL only for the tests, deleted when the job ends
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: ci_root_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    # test-only values, not real secrets
+    env:
+      ENVIRONMENT: TEST
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: streamia
+      DB_USER: root
+      DB_PASSWORD: ci_root_password
+      JWT_SECRET: ci-only-not-a-real-secret
+      JWT_EXPIRES_IN: 1h
+      FRONTEND_URL: http://localhost:5173
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Load database schema
+        run: mysql -h 127.0.0.1 -uroot -pci_root_password < ../database/schema.sql
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
