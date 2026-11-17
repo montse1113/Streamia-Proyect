@@ -17,7 +17,7 @@ export function LoginPage() {
     setIsSubmitting(true)
 
     try {
-      await login({ email, password }) //function from AuthContext 
+      await login({ email, password }) // function from AuthContext
       navigate('/catalog') // redirect to the catalog page after successful login
     } catch (err) {
       // wrong email or password (401), too many tries (429) or no connection

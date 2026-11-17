@@ -1,7 +1,7 @@
 import type { Genre, PaginatedResponse, Title, TitleFilters } from '../types/title'
 import { apiFetch } from './http'
 
-//Ask list of titles whit the filters to the API and return them as a PaginatedResponse of Title objects
+// Gets one page of titles with the filters
 export function getTitles(filters: TitleFilters = {}) {
   const params = new URLSearchParams()
   if (filters.page) params.set('page', String(filters.page))
@@ -13,7 +13,7 @@ export function getTitles(filters: TitleFilters = {}) {
   return apiFetch<PaginatedResponse<Title>>(`/titles${query ? `?${query}` : ''}`)
 }
 
-//Ask list of genres to the API and return them as an array of Genre objects
+// Gets all genres
 export async function getGenres() {
   const response = await apiFetch<{ data: Genre[] }>('/genres')
   return response.data
