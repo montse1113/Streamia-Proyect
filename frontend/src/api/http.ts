@@ -1,6 +1,7 @@
-const API_URL = '/api/v1'
+import axios from 'axios'
+import { client } from '../conf/axios'
 
-// Error that also keeps the HTTP status (401, 404...)
+// Error that also keeps the HTTP status
 export class ApiError extends Error {
   status: number
 
@@ -11,58 +12,43 @@ export class ApiError extends Error {
 }
 
 // Gets the error message the API sent
-async function getErrorMessage(response: Response) {
-  try {
-    const body = await response.json()
+function getErrorMessage(data: unknown) {
+  const body = (data ?? {}) as { errors?: { message: string }[], message?: unknown }
 
-    // 400: list of errors
-    if (Array.isArray(body.errors)) {
-      return body.errors.map((error: { message: string }) => error.message).join(' ')
-    }
+  // 400: list of errors
+  if (Array.isArray(body.errors)) {
+    return body.errors.map((error) => error.message).join(' ')
+  }
 
-    // 401, 404, 409...: one message
-    if (typeof body.message === 'string') {
-      return body.message
-    }
-  } catch {
-    // not JSON
+  // 401, 404, 409
+  if (typeof body.message === 'string') {
+    return body.message
   }
 
   return 'Something went wrong. Please try again later.'
 }
 
-// Calls the API. The token is only for protected routes
+// Calls the API with Axios. The token is only for protected routes
 export async function apiFetch<T>(
   path: string,
   method = 'GET',
   body?: unknown,
   token?: string | null,
 ): Promise<T> {
-  const headers: Record<string, string> = {}
-
-  if (body) {
-    headers['Content-Type'] = 'application/json'
-  }
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`
-  }
-
-  let response: Response
   try {
-    response = await fetch(`${API_URL}${path}`, {
+    const response = await client.request<T>({
+      url: path,
       method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
+      data: body,
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     })
-  } catch {
-    // no connection or server down
+    return response.data
+  } catch (error) {
+    // the API answered with an error (400, 401, 404...)
+    if (axios.isAxiosError(error) && error.response) {
+      throw new ApiError(error.response.status, getErrorMessage(error.response.data))
+    }
+    // no connection, server down or too slow
     throw new ApiError(0, 'We could not connect. Check your internet connection and try again.')
   }
-
-  if (!response.ok) {
-    throw new ApiError(response.status, await getErrorMessage(response))
-  }
-
-  return response.json() as Promise<T>
 }
