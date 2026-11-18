@@ -21,6 +21,10 @@ export class Server {
     this.app.use(cors({ origin: options.frontendUrl }));
     this.app.use(express.json());
     this.app.use("/api", options.routes);
+    //unknown API routes answer JSON instead of the default HTML page
+    this.app.use("/api", (_req, res) => {
+      res.status(404).json({ message: "We couldn't find what you were looking for." });
+    });
     this.app.use(errorHandler);
   }
 
