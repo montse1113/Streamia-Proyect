@@ -35,3 +35,21 @@ export interface TitleFilters {
   type?: TitleType
   genreId?: number
 }
+
+export interface Episode {
+  id: number
+  number: number
+  name: string
+  durationMin: number | null
+}
+
+export interface Season {
+  id: number
+  number: number
+  episodes: Episode[]
+}
+
+// The detail also brings the seasons (only for series)
+export interface TitleDetail extends Title {
+  seasons?: Season[]
+}
