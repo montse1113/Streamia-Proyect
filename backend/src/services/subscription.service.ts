@@ -13,18 +13,18 @@ export class SubscriptionService {
     public async createCheckout(userId: number, planId: number): Promise<{ url: string }> {
         const plan = await Plan.findOne({ where: { id: planId, isActive: true } });
         if (!plan || !plan.priceId) {
-            throw new HttpError(404, "we could not find that plan");
+            throw new HttpError(404, "We couldn't find that plan.");
         }
         const priceId = plan.priceId;
 
         const active = await Subscription.findOne({ where: { userId, status: "active" } });
         if (active) {
-            throw new HttpError(409, "you already have an active subscription");
+            throw new HttpError(409, "You already have an active subscription.");
         }
 
         const user = await User.findOne({ where: { id: userId, isActive: true } });
         if (!user) {
-            throw new HttpError(404, "user not found");
+            throw new HttpError(404, "We couldn't find your account.");
         }
 
         // reuse an unfinished checkout instead of piling up pending rows
