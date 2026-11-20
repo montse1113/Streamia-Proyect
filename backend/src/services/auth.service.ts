@@ -14,7 +14,7 @@ export class AuthService {
   public async register(dto: CreateUserDto): Promise<UserResponseDto> {
     const exists = await User.findOne({ where: { email: dto.email } });
     if (exists) {
-      throw new HttpError(409, "email is already registered");
+      throw new HttpError(409, "This email is already registered. Try logging in instead.");
     }
 
     const hash = await bcrypt.hash(dto.password, SALT_ROUNDS);
@@ -34,7 +34,7 @@ export class AuthService {
     // same message for wrong email or wrong password, so emails can not be guessed
     const validPassword = user ? await bcrypt.compare(dto.password, user.password) : false;
     if (!user || !validPassword) {
-      throw new HttpError(401, "invalid email or password");
+      throw new HttpError(401, "The email or password is incorrect.");
     }
 
     const token = await this.tokenAdapter.sign({ id: user.id, role: user.role });

@@ -46,7 +46,7 @@ export class TitleService {
             ],
         });
         if (!title) {
-            throw new HttpError(404, "title not found");
+            throw new HttpError(404, "We couldn't find this movie or series.");
         }
 
         return TitleResponseDto.create(title);

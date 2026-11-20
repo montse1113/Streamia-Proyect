@@ -1,23 +1,23 @@
 import { body } from "express-validator";
 
 export const registerValidator = [
-  body("name").trim().notEmpty().withMessage("name is required").isLength({ max: 80 }),
-  body("lastName").trim().notEmpty().withMessage("last name is required").isLength({ max: 80 }),
-    body("email")
+  body("name").trim().notEmpty().withMessage("Please enter your name.").isLength({ max: 80 }).withMessage("Your name can have up to 80 characters."),
+  body("lastName").trim().notEmpty().withMessage("Please enter your last name.").isLength({ max: 80 }).withMessage("Your last name can have up to 80 characters."),
+  body("email")
     .trim()
     .isLength({ max: 255 })
-    .withMessage("email is too long")
+    .withMessage("The email can have up to 255 characters.")
     .isEmail()
-    .withMessage("invalid email")
+    .withMessage("Please enter a valid email.")
     .normalizeEmail(),
   body("password")
     .isLength({ min: 8, max: 72 })
-    .withMessage("password must have between 8 and 72 characters")
+    .withMessage("The password must have between 8 and 72 characters.")
     .matches(/\d/)
-    .withMessage("password must contain a number"),
+    .withMessage("The password must include at least one number."),
 ];
 
 export const loginValidator = [
-  body("email").trim().isEmail().withMessage("invalid email").normalizeEmail(),
-  body("password").notEmpty().withMessage("password is required"),
+  body("email").trim().isEmail().withMessage("Please enter a valid email.").normalizeEmail(),
+  body("password").notEmpty().withMessage("Please enter your password."),
 ];
