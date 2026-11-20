@@ -5,6 +5,7 @@ import { GenreRoutes } from "./genre.routes.ts";
 import { UserRoutes } from "./user.routes.ts";
 import { AdminRoutes } from "./admin.routes.ts";
 import { PlanRoutes } from "./plan.routes.ts";
+import { SubscriptionRoutes } from "./subscription.routes.ts";
 
 export class AppRoutes {
     static get router(): Router {
@@ -19,6 +20,7 @@ export class AppRoutes {
         router.use("/v1/users", UserRoutes.router);
         router.use("/v1/admin", AdminRoutes.router);
         router.use("/v1/plans", PlanRoutes.router);
+        router.use("/v1/subscriptions", SubscriptionRoutes.router);
 
 
         return router;
