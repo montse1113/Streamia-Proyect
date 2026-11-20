@@ -1,4 +1,4 @@
-import type { Genre, PaginatedResponse, Title, TitleFilters } from '../types/title'
+import type { Genre, PaginatedResponse, Title, TitleDetail, TitleFilters } from '../types/title'
 import { apiFetch } from './http'
 
 // Gets one page of titles with the filters
@@ -18,3 +18,10 @@ export async function getGenres() {
   const response = await apiFetch<{ data: Genre[] }>('/genres')
   return response.data
 }
+
+// Gets one title with its genres and, for series, its seasons and episodes
+export async function getTitle(id: string) {
+  const response = await apiFetch<{ data: TitleDetail }>(`/titles/${id}`)
+  return response.data
+}
+
