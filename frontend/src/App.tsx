@@ -10,9 +10,10 @@ import { TitleDetailPage } from './pages/TitleDetailPage'
 
 function App() {
   return (
-    <>
+    // Gray background and dark text for the whole app
+    <div className="min-h-screen bg-slate-100 text-slate-950">
       <Navbar />
-      <main>
+      <main className="mx-auto max-w-6xl px-4 py-6">
         <Routes>
           <Route path="/" element={<Navigate to="/catalog" />} />
           <Route path="/login" element={<LoginPage />} />
@@ -24,7 +25,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-    </>
+    </div>
   )
 }
 
