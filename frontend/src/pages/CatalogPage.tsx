@@ -5,7 +5,6 @@ import { CatalogFilters } from '../components/CatalogFilters'
 import { Pagination } from '../components/Pagination'
 import { TitleGrid } from '../components/TitleGrid'
 import type { Genre, PaginationMeta, Title, TitleType } from '../types/title'
-import './CatalogPage.css'
 
 // Each parser returns a valid value from the URL, or a default if it is missing or invalid
 function parsePage(value: string | null) {
@@ -21,6 +20,9 @@ function parseGenreId(value: string | null) {
   const genreId = Number(value)
   return Number.isInteger(genreId) && genreId >= 1 ? genreId : undefined
 }
+
+// Buttons shown when there are no results
+const buttonClass = 'mt-3 rounded-lg border border-slate-400 px-4 py-2 hover:bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 
 export function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -108,8 +110,9 @@ export function CatalogPage() {
   }
 
   return (
-    <main className="catalog">
-      <h1>Catalog</h1>
+    // section, not main: App.tsx already has the <main>
+    <section>
+      <h1 className="mb-4 text-3xl font-bold">Catalog</h1>
 
       <CatalogFilters
         type={type}
@@ -119,24 +122,24 @@ export function CatalogPage() {
         onGenreChange={(newGenreId) => handleFilterChange('genreId', newGenreId?.toString())}
       />
 
-      {isLoading && <p className="catalog__message">Loading titles...</p>}
+      {isLoading && <p className="py-8 text-center text-slate-500">Loading titles...</p>}
 
       {!isLoading && error && (
-        <p className="catalog__message catalog__message--error" role="alert">
+        <p className="rounded-lg bg-red-100 p-4 text-center text-red-700" role="alert">
           {error}
         </p>
       )}
 
       {!isLoading && !error && titles.length === 0 && (
-        <div className="catalog__message">
+        <div className="py-8 text-center">
           <p>No titles match these filters.</p>
           {hasFilters && (
-            <button type="button" onClick={clearFilters}>
+            <button type="button" onClick={clearFilters} className={buttonClass}>
               Clear filters
             </button>
           )}
           {!hasFilters && page > 1 && (
-            <button type="button" onClick={() => handlePageChange(1)}>
+            <button type="button" onClick={() => handlePageChange(1)} className={buttonClass}>
               Go to the first page
             </button>
           )}
@@ -149,6 +152,6 @@ export function CatalogPage() {
           <Pagination page={meta.page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
         </>
       )}
-    </main>
+    </section>
   )
 }
