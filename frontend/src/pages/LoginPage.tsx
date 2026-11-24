@@ -1,6 +1,10 @@
 import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import {
+  cardClass, errorClass, footerClass, formClass, inputClass,
+  labelClass, linkClass, submitClass, titleClass,
+} from '../components/formStyles'
 
 export function LoginPage() {
   const { login } = useAuth()
@@ -28,11 +32,11 @@ export function LoginPage() {
   }
 
   return (
-    <section>
-      <h1>Log in</h1>
+    <section className={cardClass}>
+      <h1 className={titleClass}>Log in</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
+      <form onSubmit={handleSubmit} className={formClass}>
+        <label htmlFor="email" className={labelClass}>Email</label>
         <input
           id="email"
           type="email"
@@ -40,9 +44,10 @@ export function LoginPage() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required
+          className={inputClass}
         />
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password" className={labelClass}>Password</label>
         <input
           id="password"
           type="password"
@@ -50,17 +55,18 @@ export function LoginPage() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required
+          className={inputClass}
         />
 
-        {error && <p role="alert">{error}</p>}
+        {error && <p role="alert" className={errorClass}>{error}</p>}
 
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting} className={submitClass}>
           {isSubmitting ? 'Logging in...' : 'Log in'}
         </button>
       </form>
 
-      <p>
-        Don't have an account? <Link to="/register">Sign up</Link>
+      <p className={footerClass}>
+        Don't have an account? <Link to="/register" className={linkClass}>Sign up</Link>
       </p>
     </section>
   )
