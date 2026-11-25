@@ -30,13 +30,21 @@ export function PlansPage() {
   }, [])
 
   return (
-    <main>
-      <h1>Plans</h1>
+    // section
+    <section>
+      <h1 className="mb-2 text-3xl font-bold">Plans</h1>
+      <p className="mb-6 text-slate-600">Choose the plan that fits you best.</p>
 
-      {isLoading && <p>Loading plans...</p>}
-      {error && <p role="alert">{error}</p>}
-      {!isLoading && !error && plans.length === 0 && <p>There are no plans right now.</p>}
+      {isLoading && <p className="py-8 text-center text-slate-500">Loading plans...</p>}
+      {error && (
+        <p role="alert" className="rounded-lg bg-red-100 p-4 text-center text-red-700">
+          {error}
+        </p>
+      )}
+      {!isLoading && !error && plans.length === 0 && (
+        <p className="py-8 text-center">There are no plans right now.</p>
+      )}
       {!isLoading && !error && plans.length > 0 && <PlanList plans={plans} />}
-    </main>
+    </section>
   )
 }
