@@ -5,6 +5,7 @@ import { getTitle } from '../api/titles'
 import { TitleInfo } from '../components/TitleInfo'
 import type { TitleDetail } from '../types/title'
 import { NotFoundPage } from './NotFoundPage'
+import { alertClass, loadingClass } from '../components/statusStyles'
 
 // Container: loads one title and handles loading, not found and error states
 export function TitleDetailPage() {
@@ -51,12 +52,19 @@ export function TitleDetailPage() {
   }
 
   return (
-    <main>
-      <Link to="/catalog">← Back to the catalog</Link>
+    // section, not main: App.tsx already has the <main>
+    <section>
+      <Link to="/catalog" className="mb-6 inline-block text-sm font-medium text-indigo-600 hover:underline">
+        ← Back to the catalog
+      </Link>
 
-      {isLoading && <p>Loading...</p>}
-      {error && <p role="alert">{error}</p>}
+      {isLoading && <p className={loadingClass}>Loading...</p>}
+      {error && (
+        <p role="alert" className={alertClass}>
+          {error}
+        </p>
+      )}
       {!isLoading && !error && title && <TitleInfo title={title} />}
-    </main>
+    </section>
   )
 }

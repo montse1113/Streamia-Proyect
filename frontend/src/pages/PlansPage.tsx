@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getPlans } from '../api/plans'
 import { PlanList } from '../components/PlanList'
 import type { Plan } from '../types/plan'
+import { alertClass, loadingClass } from '../components/statusStyles'
 
 // Container: loads the plans and handles loading, error and empty states
 export function PlansPage() {
@@ -30,13 +31,21 @@ export function PlansPage() {
   }, [])
 
   return (
-    <main>
-      <h1>Plans</h1>
+    // section, not main
+    <section>
+      <h1 className="mb-2 text-3xl font-bold">Plans</h1>
+      <p className="mb-6 text-slate-600">Choose the plan that fits you best.</p>
 
-      {isLoading && <p>Loading plans...</p>}
-      {error && <p role="alert">{error}</p>}
-      {!isLoading && !error && plans.length === 0 && <p>There are no plans right now.</p>}
+      {isLoading && <p className={loadingClass}>Loading plans...</p>}
+      {error && (
+        <p role="alert" className={alertClass}>
+          {error}
+        </p>
+      )}
+      {!isLoading && !error && plans.length === 0 && (
+        <p className="py-8 text-center">There are no plans right now.</p>
+      )}
       {!isLoading && !error && plans.length > 0 && <PlanList plans={plans} />}
-    </main>
+    </section>
   )
 }

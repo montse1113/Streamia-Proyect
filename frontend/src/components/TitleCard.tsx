@@ -9,16 +9,27 @@ export function TitleCard({ title }: TitleCardProps) {
   const typeLabel = title.type === 'series' ? 'Series' : 'Movie'
 
   return (
-    <Link to={`/titles/${title.id}`} className="title-card">
+    // group lets the children react when the card is hovered
+    <Link
+      to={`/titles/${title.id}`}
+      className="group block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
+    >
       {title.posterUrl ? (
-        <img src={title.posterUrl} alt={`${title.title} poster`} className="title-card__poster" />
+        <img
+          src={title.posterUrl}
+          alt={`${title.title} poster`}
+          className="aspect-2/3 w-full rounded-lg bg-slate-300 object-cover group-hover:opacity-80"
+        />
       ) : (
-        <div className="title-card__poster title-card__poster--empty" aria-hidden="true">
+        <div
+          className="flex aspect-2/3 w-full items-center justify-center rounded-lg bg-slate-300 text-5xl font-bold text-slate-600 group-hover:opacity-80"
+          aria-hidden="true"
+        >
           {title.title.charAt(0)}
         </div>
       )}
-      <h2 className="title-card__name">{title.title}</h2>
-      <p className="title-card__info">
+      <h2 className="mt-2 font-semibold group-hover:text-indigo-600">{title.title}</h2>
+      <p className="text-sm text-slate-600">
         {title.releaseYear ? `${typeLabel}, ${title.releaseYear}` : typeLabel}
       </p>
     </Link>

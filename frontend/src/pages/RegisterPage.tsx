@@ -2,6 +2,10 @@ import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { register } from '../api/auth'
 import { useAuth } from '../context/AuthContext' // Access the login function from AuthContext to log in after registering
+import {
+  cardClass, errorClass, footerClass, formClass, hintClass, inputClass,
+  labelClass, linkClass, submitClass, titleClass,
+} from '../components/formStyles'
 
 export function RegisterPage() {
   const { login } = useAuth()
@@ -33,11 +37,11 @@ export function RegisterPage() {
   }
 
   return (
-    <section>
-      <h1>Sign up</h1>
+    <section className={cardClass}>
+      <h1 className={titleClass}>Sign up</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+      <form onSubmit={handleSubmit} className={formClass}>
+        <label htmlFor="name" className={labelClass}>Name</label>
         <input
           id="name"
           type="text"
@@ -45,9 +49,10 @@ export function RegisterPage() {
           value={name}
           onChange={(event) => setName(event.target.value)}
           required
+          className={inputClass}
         />
 
-        <label htmlFor="lastName">Last name</label>
+        <label htmlFor="lastName" className={labelClass}>Last name</label>
         <input
           id="lastName"
           type="text"
@@ -55,9 +60,10 @@ export function RegisterPage() {
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}
           required
+          className={inputClass}
         />
 
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email" className={labelClass}>Email</label>
         <input
           id="email"
           type="email"
@@ -65,9 +71,10 @@ export function RegisterPage() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required
+          className={inputClass}
         />
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password" className={labelClass}>Password</label>
         <input
           id="password"
           type="password"
@@ -76,18 +83,19 @@ export function RegisterPage() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required
+          className={inputClass}
         />
-        <small id="password-hint">At least 8 characters and one number.</small>
+        <small id="password-hint" className={hintClass}>At least 8 characters and one number.</small>
 
-        {error && <p role="alert">{error}</p>}
+        {error && <p role="alert" className={errorClass}>{error}</p>}
 
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting} className={submitClass}>
           {isSubmitting ? 'Creating account...' : 'Sign up'}
         </button>
       </form>
 
-      <p>
-        Already have an account? <Link to="/login">Log in</Link>
+      <p className={footerClass}>
+        Already have an account? <Link to="/login" className={linkClass}>Log in</Link>
       </p>
     </section>
   )
