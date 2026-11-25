@@ -51,12 +51,19 @@ export function TitleDetailPage() {
   }
 
   return (
-    <main>
-      <Link to="/catalog">← Back to the catalog</Link>
+    // section, not main: App.tsx already has the <main>
+    <section>
+      <Link to="/catalog" className="mb-6 inline-block text-sm font-medium text-indigo-600 hover:underline">
+        ← Back to the catalog
+      </Link>
 
-      {isLoading && <p>Loading...</p>}
-      {error && <p role="alert">{error}</p>}
+      {isLoading && <p className="py-8 text-center text-slate-500">Loading...</p>}
+      {error && (
+        <p role="alert" className="rounded-lg bg-red-100 p-4 text-center text-red-700">
+          {error}
+        </p>
+      )}
       {!isLoading && !error && title && <TitleInfo title={title} />}
-    </main>
+    </section>
   )
 }

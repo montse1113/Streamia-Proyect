@@ -30,7 +30,7 @@ export function PlansPage() {
   }, [])
 
   return (
-    // section
+    // section, not main
     <section>
       <h1 className="mb-2 text-3xl font-bold">Plans</h1>
       <p className="mb-6 text-slate-600">Choose the plan that fits you best.</p>
