@@ -5,6 +5,7 @@ import { CatalogFilters } from '../components/CatalogFilters'
 import { Pagination } from '../components/Pagination'
 import { TitleGrid } from '../components/TitleGrid'
 import type { Genre, PaginationMeta, Title, TitleType } from '../types/title'
+import { alertClass, loadingClass } from '../components/statusStyles'
 
 // Each parser returns a valid value from the URL, or a default if it is missing or invalid
 function parsePage(value: string | null) {
@@ -122,10 +123,10 @@ export function CatalogPage() {
         onGenreChange={(newGenreId) => handleFilterChange('genreId', newGenreId?.toString())}
       />
 
-      {isLoading && <p className="py-8 text-center text-slate-500">Loading titles...</p>}
+      {isLoading && <p className={loadingClass}>Loading titles...</p>}
 
       {!isLoading && error && (
-        <p className="rounded-lg bg-red-100 p-4 text-center text-red-700" role="alert">
+        <p className={alertClass} role="alert">
           {error}
         </p>
       )}

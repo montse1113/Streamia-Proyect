@@ -5,6 +5,7 @@ import { getTitle } from '../api/titles'
 import { TitleInfo } from '../components/TitleInfo'
 import type { TitleDetail } from '../types/title'
 import { NotFoundPage } from './NotFoundPage'
+import { alertClass, loadingClass } from '../components/statusStyles'
 
 // Container: loads one title and handles loading, not found and error states
 export function TitleDetailPage() {
@@ -57,9 +58,9 @@ export function TitleDetailPage() {
         ← Back to the catalog
       </Link>
 
-      {isLoading && <p className="py-8 text-center text-slate-500">Loading...</p>}
+      {isLoading && <p className={loadingClass}>Loading...</p>}
       {error && (
-        <p role="alert" className="rounded-lg bg-red-100 p-4 text-center text-red-700">
+        <p role="alert" className={alertClass}>
           {error}
         </p>
       )}

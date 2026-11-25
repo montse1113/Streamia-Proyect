@@ -22,7 +22,7 @@ export function TitleInfo({ title }: TitleInfoProps) {
 
       <div className="flex-1">
         <h1 className="text-3xl font-bold">{title.title}</h1>
-        <p className="mt-1 text-slate-500">
+        <p className="mt-1 text-slate-600">
           {typeLabel}
           {title.releaseYear && ` · ${title.releaseYear}`}
           {title.ageRating && ` · ${title.ageRating}`}

@@ -7,7 +7,7 @@ interface SeasonListProps {
 // Shows each season with its episodes
 export function SeasonList({ seasons }: SeasonListProps) {
   if (seasons.length === 0) {
-    return <p className="mt-6 text-slate-500">This series has no episodes yet.</p>
+    return <p className="mt-6 text-slate-600">This series has no episodes yet.</p>
   }
 
   return (

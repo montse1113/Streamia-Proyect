@@ -29,7 +29,7 @@ export function TitleCard({ title }: TitleCardProps) {
         </div>
       )}
       <h2 className="mt-2 font-semibold group-hover:text-indigo-600">{title.title}</h2>
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-slate-600">
         {title.releaseYear ? `${typeLabel}, ${title.releaseYear}` : typeLabel}
       </p>
     </Link>
