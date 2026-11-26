@@ -3,15 +3,22 @@ import { PlanCard } from './PlanCard'
 
 interface PlanListProps {
   plans: Plan[]
+  onSubscribe: (planId: number) => void
+  subscribingId: number | null // id of the plan being sent, or null
 }
 
-// Shows the list of plans it receives
-export function PlanList({ plans }: PlanListProps) {
+// shows the list of plans it receives
+export function PlanList({ plans, onSubscribe, subscribingId }: PlanListProps) {
   return (
     <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {plans.map((plan) => (
         <li key={plan.id}>
-          <PlanCard plan={plan} />
+          <PlanCard
+            plan={plan}
+            onSubscribe={onSubscribe}
+            isSubscribing={subscribingId === plan.id}
+            disabled={subscribingId !== null}
+          />
         </li>
       ))}
     </ul>
