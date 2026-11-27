@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { register } from '../api/auth'
 import { useAuth } from '../context/AuthContext' // Access the login function from AuthContext to log in after registering
 import {
@@ -10,6 +10,9 @@ import {
 export function RegisterPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  // page to go back to after signing up (comes from the login), or the catalog
+  const from = (location.state as { from?: string } | null)?.from ?? '/catalog'
 
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -27,7 +30,7 @@ export function RegisterPage() {
       await register({ name, lastName, email, password })
       // the account was created, so we log in with the same data
       await login({ email, password })
-      navigate('/catalog')
+      navigate(from)
     } catch (err) {
       // invalid data (400), email already registered (409) or no connection
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again later.')
@@ -95,7 +98,7 @@ export function RegisterPage() {
       </form>
 
       <p className={footerClass}>
-        Already have an account? <Link to="/login" className={linkClass}>Log in</Link>
+        Already have an account? <Link to="/login" state={{ from }} className={linkClass}>Log in</Link>
       </p>
     </section>
   )

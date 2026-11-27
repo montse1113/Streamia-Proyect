@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import {
   cardClass, errorClass, footerClass, formClass, inputClass,
@@ -9,6 +9,9 @@ import {
 export function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  // page to go back to after logging in (PlansPage sends it), or the catalog
+  const from = (location.state as { from?: string } | null)?.from ?? '/catalog'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,7 +25,7 @@ export function LoginPage() {
 
     try {
       await login({ email, password }) // function from AuthContext
-      navigate('/catalog') // redirect to the catalog page after successful login
+      navigate(from) // back to where the user was, or the catalog
     } catch (err) {
       // wrong email or password (401), too many tries (429) or no connection
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again later.')
@@ -66,7 +69,7 @@ export function LoginPage() {
       </form>
 
       <p className={footerClass}>
-        Don't have an account? <Link to="/register" className={linkClass}>Sign up</Link>
+        Don't have an account? <Link to="/register" state={{ from }} className={linkClass}>Sign up</Link>
       </p>
     </section>
   )

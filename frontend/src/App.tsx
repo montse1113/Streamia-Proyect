@@ -7,6 +7,7 @@ import { PlansPage } from './pages/PlansPage'
 import { PlayerPage } from './pages/PlayerPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { TitleDetailPage } from './pages/TitleDetailPage'
+import { SubscriptionSuccessPage } from './pages/SubscriptionSuccessPage'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/titles/:id" element={<TitleDetailPage />} />
           <Route path="/plans" element={<PlansPage />} />
+          <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />
           <Route path="/watch/:id" element={<PlayerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
